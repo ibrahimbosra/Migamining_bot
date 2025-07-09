@@ -1,4 +1,5 @@
 import os
+import json
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.utils import executor
@@ -14,7 +15,15 @@ if not API_TOKEN:
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-cred = credentials.Certificate('firebase-adminsdk.json')
+# قراءة بيانات Firebase من متغير البيئة
+cred_json = os.getenv("FIREBASE_CREDENTIALS")
+if not cred_json:
+    print("Error: FIREBASE_CREDENTIALS environment variable is not set.")
+    exit(1)
+
+cred_dict = json.loads(cred_json)
+cred = credentials.Certificate(cred_dict)
+
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://migamining-c6c20-default-rtdb.firebaseio.com'
 })
