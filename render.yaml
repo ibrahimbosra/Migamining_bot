@@ -1,0 +1,4 @@
+services:
+  your-service-name:
+    env: python-3.12
+    ...
